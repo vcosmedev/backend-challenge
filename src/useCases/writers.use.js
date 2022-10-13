@@ -1,5 +1,5 @@
 import {Writer} from '../models/writers.model.js';
-import bcrypt from '../libs/bcrypt.js';
+// import bcrypt from '../libs/bcrypt.js';
 
 async function create(newWriter) {
     // Modificar
@@ -12,7 +12,7 @@ async function create(newWriter) {
     if(writerFound) throw new Error('Ya existe un Writer con este email');
 
     // Encriptar el password
-    const encryptedPassword = await bcrypt.hash(password);
+    const encryptedPassword = await bcrypt.hash(password); // 
 
     return Writer.create({...newWriter, password: encryptedPassword});
 };
