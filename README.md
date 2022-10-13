@@ -10,9 +10,9 @@ Dado el Desafío presentado en el modulo anterior (Frontend); desarrollar la API
       - Eliminar
       - Obtener el detalle de un post
       - Obtener todos los posts
-      - Cada Post (artículo) deberá tener la referencia al Writer al que pertenece.
-      - Poder agregar/actualizar/eliminar comentarios a un post
-      - Poder paginar el endpoint de GET /posts?page=1&limit=10 (Plus :nerd_face:).
+      * Cada Post (artículo) deberá tener la referencia al Writer al que pertenece
+      - Poder agregar/actualizar/eliminar comentarios a un post (comments endpoint)
+      - Poder paginar el endpoint de GET /posts?page=1&limit=10 (Plus :nerd_face:)
  
  2. Permitir la gestión de Writers: Atributos para cada Writer: [nombre, fecha en la que se unió a la plataforma, biografía, nacionalidad]:
       - Crear

@@ -7,11 +7,10 @@ import express from 'express'
 const server = express()
 
 // Middlewares
-server.use(express.json())
+server.use(express.json()) // Permite extraer JSON
 
 // Routers
 // server.use('auth', authRouter)
-
 
 
 // Exportar servidor para que pueda ser usado en index.js
