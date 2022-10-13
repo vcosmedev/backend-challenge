@@ -1,6 +1,6 @@
 import express from 'express';
 import * as writersUsesCases from '../useCases/writers.use.js';
-import {auth} from '../middlewares/auth.js';
+// import {auth} from '../middlewares/auth.js';
 
 const router = express.Router();
 // La comunicación de fuera hacia dentro
@@ -8,15 +8,15 @@ const router = express.Router();
 
 router.post('/', async(request, response, next) => {
     try {
-        const {body: newKoder} = request
-        await writersUsesCases.create(newKoder)
+        const {body: newWriter} = request
+        await writersUsesCases.create(newWriter)
 
         response.json({
             success: true,
             message: '¡Writer creado!'
         })
     } catch (error) {
-        // PENDING: reemplazar por el middleware del handleErrors
+        // PENDING: reemplazar por el middleware del handleErrors -----------------------------
         response.status(400)
         response.json({
             success: false,
@@ -25,89 +25,87 @@ router.post('/', async(request, response, next) => {
     }
 });
 
-router.get('/', auth, async (request, response, next) => {
+router.get('/', async (request, response, next) => {
     try {
-        const allKoders = await kodersUsesCases.getAll()
+        const allWriters = await writersUsesCases.getAll()
         response.json({
             success: true,
             data: {
-                koders: allKoders
+                writers: allWriters
             }
         })
     } catch (error) {
-        // PENDING: reemplazar por el middleware del handleErrors
+        // PENDING: reemplazar por el middleware del handleErrors -----------------------------
         response.status(400)
         response.json({
             success: false,
             message: error.message
         })
     }
-})
+});
 
-router.get('/:id', auth, async (request, response, next) => {
+router.get('/:id', async (request, response, next) => {
     try {
         const {id} = request.params
-        const koder = kodersUsesCases.getById(id)
+        const writer = writersUsesCases.getById(id)
 
         response.json({
             success: true,
             data: {
-                koder
+                writer
             }
         })
     } catch (error) {
-        // PENDING: reemplazar por el middleware del handleErrors
+        // PENDING: reemplazar por el middleware del handleErrors -----------------------------
         response.status(400)
         response.json({
             success: false,
             message: error.message
         })
     }
-})
+});
 
-router.patch('/:id',auth,  async (request, response, next) => {
+router.patch('/:id',  async (request, response, next) => {
     try {
         const {id} = request.params
         const {body} = request
-        const koderUpdated = kodersUsesCases.updateById(id,body)
+        const writerUpdated = writersUsesCases.updateById(id,body)
 
         response.json({
             success: true,
             data: {
-                koder: koderUpdated
+                writer: writerUpdated
             }
         })
     } catch (error) {
-        // PENDING: reemplazar por el middleware del handleErrors
+        // PENDING: reemplazar por el middleware del handleErrors -----------------------------
         response.status(400)
         response.json({
             success: false,
             message: error.message
         })
     }
-})
+});
 
 
-router.delete('/:id',auth,  async(request, response) => {
+router.delete('/:id',  async(request, response) => {
     try {
         const {id} = request.params
-        await kodersUsesCases.deleteById(id)
+        await writersUsesCases.deleteById(id)
 
         response.json({
             success: true,
-            message: 'Koder eliminado'
+            message: 'Writer eliminado'
         })
     } catch (error) {
-        // PENDING: reemplazar por el middleware del handleErrors
+        // PENDING: reemplazar por el middleware del handleErrors -----------------------------
         response.status(400)
         response.json({
             success: false,
             message: error.message
         })
     }
-})
+});
 
 
 export default router
-
-
