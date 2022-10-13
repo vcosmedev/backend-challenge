@@ -3,41 +3,28 @@ import mongoose from 'mongoose'
 // Schema de comments
 
 const commentSchema = new mongoose.Schema({
-    name: {
-        type: String,
+    author: {
+        type: mongoose.Schema.Types.ObjectId,
         required: true,
-        minLength: 3,
-        maxLength: 100,
-        trim: true
-    },
-    lastName: {
-        type: String,
-        required: true,
-        minLength: 3,
-        maxLength: 100,
-        trim: true
-    },
-    picture: {
-        type: String,
-        required: true,
-        trim: true
+        trim: true,
+        ref: 'writers'
     },
     comment: {
         type: String,
         required: true,
         trim: true
     },
-    commentDate: {
-        type: String,
+    date: {
+        type: Date,
         required: true,
         trim: true
     },
-    commentReply: {
+    reply: {
         type: String,
         trim: true
     },
     replyDate: {
-        type: String,
+        type: Date,
         trim: true
     }
 })
