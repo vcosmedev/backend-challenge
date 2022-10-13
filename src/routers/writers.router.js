@@ -98,7 +98,7 @@ router.delete('/:id',  async(request, response) => {
             message: 'Writer eliminado'
         })
     } catch (error) {
-        // PENDING: reemplazar por el middleware del handleErrors
+        // PENDING: reemplazar por el middleware del handleErrors -----------------------------
         response.status(400)
         response.json({
             success: false,
