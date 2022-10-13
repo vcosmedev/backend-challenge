@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-// Schema de Koders
+// Schema de Writers
 const writersSchema = new mongoose.Schema({
     name: {
         type: String,
