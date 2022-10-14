@@ -22,12 +22,20 @@ async function create(newWriter) {
     return Writer.create({...newWriter, password: encryptedPassword});
 };
 
-function updateById(idWriter, newData) {
-    return Writer.findByIdAndUpdate(idWriter, newData, {new: true});
+async function updateById(idWriter, newData) {
+    const writerFound = await Writer.findById(idWriter);
+
+    if(!writerFound) throw new StatusHttp('No existe este Writer');
+
+    return await Writer.updateOne({_id: idWriter}, newData);
 };
 
-function deleteById(idWriter) {
-    return Writer.findOneAndDelete(idWriter);
+async function deleteById(idWriter) {
+    const writerFound = await Writer.findById(idWriter);
+
+    if(!writerFound) throw new StatusHttp('No existe este Writer');
+
+    return await Writer.deleteOne({_id: idWriter});
 };
 
 function getById(idWriter) {
