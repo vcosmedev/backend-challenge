@@ -1,6 +1,6 @@
 import express from 'express';
 import * as writersUsesCases from '../useCases/writers.use.js';
-// import {auth} from '../middlewares/auth.js';
+import {auth} from '../middlewares/auth.js';
 
 const router = express.Router();
 // La comunicación de fuera hacia dentro

@@ -33,7 +33,7 @@ const writersSchema = new mongoose.Schema({
         minLength: 3,
         maxLength: 30,
         trim: true
-    },
+    },    
     email: {
         type: String,
         required: true,
