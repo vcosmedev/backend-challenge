@@ -1,12 +1,13 @@
 import { StatusHttp } from '../libs/errorCustom.js';
 import {Writer} from '../models/writers.model.js';
-// import bcrypt from '../libs/bcrypt.js';
+import bcrypt from '../libs/bcrypt.js';
 
 async function create(newWriter) {
     // Modificar
     const {email, password} = newWriter;
     // find({}) -> []
-    const writerFound = await Writer.findOne({email}); 
+    const writerFound = await Writer.findOne({email});
+
     // Si encuentra al Writer -> {}
     // Si no encuentra al Writer -> undefined
 
@@ -14,7 +15,10 @@ async function create(newWriter) {
 
     // Encriptar el password
     const encryptedPassword = await bcrypt.hash(password); // 
+    console.log({...newWriter, password: encryptedPassword})
 
+    // const writer = Writer.create({...newWriter, password: encryptedPassword});
+    // console.log(writer)
     return Writer.create({...newWriter, password: encryptedPassword});
 };
 
