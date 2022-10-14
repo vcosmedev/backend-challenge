@@ -16,11 +16,11 @@ const writersSchema = new mongoose.Schema({
         maxLength: 100,
         trim: true
     },
-    singUpDate: {
+    createdAt: {
         type: Date,
         required: true,
     },
-    bibliography: {
+    biography: {
         type: String,
         default: false,
         trim: true,
@@ -33,6 +33,16 @@ const writersSchema = new mongoose.Schema({
         minLength: 3,
         maxLength: 30,
         trim: true
+    },
+    email: {
+        type: String,
+        required: true,
+        trim: true,
+        match: /.*@.*\..*/
+    },
+    password: {
+    type: String,
+    required: true
     }
 });
  
