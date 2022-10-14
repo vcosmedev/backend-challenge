@@ -1,6 +1,7 @@
 import express from 'express';
 import * as writersUsesCases from '../useCases/writers.use.js';
 import {auth} from '../middlewares/auth.js';
+import {StatusHttp} from '../libs/errorCustom.js'
 
 const router = express.Router();
 // La comunicación de fuera hacia dentro
@@ -16,13 +17,7 @@ router.post('/', async(request, response, next) => {
             message: '¡Writer creado!'
         })
     } catch (error) {
-        // PENDING: reemplazar por el middleware del handleErrors -----------------------------
-        // response.status(400)
-        // response.json({
-        //     success: false,
-        //     message: error.message
-        // })
-        next(error)
+        next(new StatusHttp(error.message, error.status, error.name))
     }
 });
 
@@ -41,63 +36,40 @@ router.get('/', async (request, response, next) => {
         }
         response.json({
             success: true,
-            data: {
-                writers: allWriters
-            }
+            data: allWriters
         })
     } catch (error) {
-        // PENDING: reemplazar por el middleware del handleErrors -----------------------------
-        // response.status(400)
-        // response.json({
-        //     success: false,
-        //     message: error.message
-        // })
-        next(error)
+        next(new StatusHttp(error.message, error.status, error.name))
     }
 });
 
 router.get('/:id', async (request, response, next) => {
     try {
         const {id} = request.params
-        const writer = writersUsesCases.getById(id)
+        let writer = await writersUsesCases.getById(id)
+        if(!writer) writer = {}
 
         response.json({
             success: true,
-            data: {
-                writer
-            }
+            data: writer
         })
     } catch (error) {
-        // PENDING: reemplazar por el middleware del handleErrors -----------------------------
-        // response.status(400)
-        // response.json({
-        //     success: false,
-        //     message: error.message
-        // })
-        next(error)
+        next(new StatusHttp(error.message, error.status, error.name))
     }
 });
 
-router.patch('/:id',  async (request, response, next) => {
+router.patch('/:id', async(request, response, next) => {
     try {
         const {id} = request.params
         const {body} = request
-        const writerUpdated = writersUsesCases.updateById(id,body)
+        await writersUsesCases.updateById(id,body)
 
         response.json({
             success: true,
-            data: {
-                writer: writerUpdated
-            }
+            message: '¡Writer actualizado!'
         })
     } catch (error) {
-        // PENDING: reemplazar por el middleware del handleErrors -----------------------------
-        // response.status(400)
-        // response.json({
-        //     success: false,
-        //     message: error.message
-        // })
-        next(error)
+        next(new StatusHttp(error.message, error.status, error.name))
     }
 });
 
@@ -112,13 +84,7 @@ router.delete('/:id',  async(request, response, next) => {
             message: 'Writer eliminado'
         })
     } catch (error) {
-        // PENDING: reemplazar por el middleware del handleErrors -----------------------------
-        // response.status(400)
-        // response.json({
-        //     success: false,
-        //     message: error.message
-        // })
-        next(error)
+        next(new StatusHttp(error.message, error.status, error.name))
     }
 });
 
