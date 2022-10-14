@@ -1,7 +1,10 @@
 // Definición de nuestro servidor (aquí no se levanta, solo se establecen la configuración)
 
 import express from 'express';
+// import cors from 'cors'
 import writersRouter from './routers/writers.router.js';
+import {errorHandle} from './middlewares/errorHandle.js'
+
 
 
 // import authRouter from './routers/auth.router.js'
@@ -15,6 +18,8 @@ server.use(express.json()); // Permite extraer JSON
 server.use('/writers', writersRouter);
 // server.use('auth', authRouter)
 
+// Middleware para manejar errores - Middleware handleErros
+server.use(errorHandle)
 
 // Exportar servidor para que pueda ser usado en index.js
 export {server}

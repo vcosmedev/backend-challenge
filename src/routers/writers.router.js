@@ -17,17 +17,28 @@ router.post('/', async(request, response, next) => {
         })
     } catch (error) {
         // PENDING: reemplazar por el middleware del handleErrors -----------------------------
-        response.status(400)
-        response.json({
-            success: false,
-            message: error.message
-        })
+        // response.status(400)
+        // response.json({
+        //     success: false,
+        //     message: error.message
+        // })
+        next(error)
     }
 });
 
+
 router.get('/', async (request, response, next) => {
     try {
-        const allWriters = await writersUsesCases.getAll()
+        let allWriters;
+        const page = request.query.page
+        const limit = request.query.limit
+        if(page && limit) {
+            // console.log("1");
+            allWriters = await writersUsesCases.getAllByPage(page, limit);
+        } else {
+            // console.log("2");
+            allWriters = await writersUsesCases.getAll();
+        }
         response.json({
             success: true,
             data: {
@@ -36,11 +47,12 @@ router.get('/', async (request, response, next) => {
         })
     } catch (error) {
         // PENDING: reemplazar por el middleware del handleErrors -----------------------------
-        response.status(400)
-        response.json({
-            success: false,
-            message: error.message
-        })
+        // response.status(400)
+        // response.json({
+        //     success: false,
+        //     message: error.message
+        // })
+        next(error)
     }
 });
 
@@ -57,11 +69,12 @@ router.get('/:id', async (request, response, next) => {
         })
     } catch (error) {
         // PENDING: reemplazar por el middleware del handleErrors -----------------------------
-        response.status(400)
-        response.json({
-            success: false,
-            message: error.message
-        })
+        // response.status(400)
+        // response.json({
+        //     success: false,
+        //     message: error.message
+        // })
+        next(error)
     }
 });
 
@@ -79,16 +92,17 @@ router.patch('/:id',  async (request, response, next) => {
         })
     } catch (error) {
         // PENDING: reemplazar por el middleware del handleErrors -----------------------------
-        response.status(400)
-        response.json({
-            success: false,
-            message: error.message
-        })
+        // response.status(400)
+        // response.json({
+        //     success: false,
+        //     message: error.message
+        // })
+        next(error)
     }
 });
 
 
-router.delete('/:id',  async(request, response) => {
+router.delete('/:id',  async(request, response, next) => {
     try {
         const {id} = request.params
         await writersUsesCases.deleteById(id)
@@ -99,13 +113,13 @@ router.delete('/:id',  async(request, response) => {
         })
     } catch (error) {
         // PENDING: reemplazar por el middleware del handleErrors -----------------------------
-        response.status(400)
-        response.json({
-            success: false,
-            message: error.message
-        })
+        // response.status(400)
+        // response.json({
+        //     success: false,
+        //     message: error.message
+        // })
+        next(error)
     }
 });
-
 
 export default router
