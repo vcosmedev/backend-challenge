@@ -17,8 +17,8 @@ async function create(newWriter) {
     const encryptedPassword = await bcrypt.hash(password); // 
     console.log({...newWriter, password: encryptedPassword})
 
-    // const writer = Writer.create({...newWriter, password: encryptedPassword});
-    // console.log(writer)
+    const writer = Writer.create({...newWriter, password: encryptedPassword});
+    console.log(writer)
     return Writer.create({...newWriter, password: encryptedPassword});
 };
 
