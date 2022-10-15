@@ -19,7 +19,6 @@ server.use('/posts', postsRouter)
 server.use('/writers', writersRouter);
 server.use('/auth', authRouter)
 server.use('/comments', commentsRouter)
-// server.use('auth', authRouter)
 
 // Middleware para manejar errores - Middleware handleErros
 server.use(errorHandle)
