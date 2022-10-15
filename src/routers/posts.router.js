@@ -3,17 +3,19 @@ import * as posts from '../useCases/posts.use.js'
 import * as commentUseCase from '../useCases/comments.use.js'
 import {auth} from '../middlewares/auth.js'
 import jwt from 'jsonwebtoken'
+import {StatusHttp} from '../libs/errorCustom.js'
+
 
 
 const router = express.Router();
 
-router.get('/', async (request,response) => {
+router.get('/', auth, async (request,response) => {
     try{
         let allPosts = ''
-        const{idUser} = request.query
+        const{idWriter} = request.query
 
-        if(idUser){
-            allPosts = await posts.getByUser(idUser)
+        if(idWriter){
+            allPosts = await posts.getByUser(idWriter)
         }else{
             allPosts = await posts.getAll()
         }
@@ -24,18 +26,15 @@ router.get('/', async (request,response) => {
             }
         })
     } catch (error) {
-        response.status(400).json({
-            success: false,
-            message: error.message
-        })
+        next(new StatusHttp(error.message, error.status, error.name))
     }
 })
 
-router.get('/writer/:idUser', async (request,response) => {
+router.get('/writer/:idWriter', auth, async (request,response) => {
     try{
-        const {idUser} = request.params
-        console.log(idUser)
-        const card = await posts.getPostByUserId(idUser)
+        const {idWriter} = request.params
+        console.log(idWriter)
+        const card = await posts.getPostByUserId(idWriter)
 
         response.json({
             success: true,
@@ -44,21 +43,18 @@ router.get('/writer/:idUser', async (request,response) => {
             }
         })
     } catch (error) {
-        response.status(400).json({
-            success: false,
-            message: error.message
-        })
+        next(new StatusHttp(error.message, error.status, error.name))
     }
 })
 
 
 router.post('/', auth,async (request,response,next) => {
     try{
-        const {body: newPostContent} = request
+        const {body: newPostData} = request
         const token = request.headers.authorization
         const {id} = jwt.decode(token)
         console.log(id)
-        const newPost = await posts.create(newPostContent,id)
+        const newPost = await posts.create(newPostData,id)
         
         response.json({
             success: true,
@@ -67,10 +63,7 @@ router.post('/', auth,async (request,response,next) => {
             }
         })
     } catch (error) {
-        response.status(400).json({
-            success: false,
-            message: error.message
-        })
+        next(new StatusHttp(error.message, error.status, error.name))
     }
 })
 
@@ -78,37 +71,31 @@ router.post('/', auth,async (request,response,next) => {
 router.delete('/:idPost',auth, async (request, response)=>{
     try{
         const {idPost} = request.params
-        const cardDeleted = await posts.deleteById(idPost)
+        const postDelete = await posts.deleteById(idPost)
         const commentsDeleted = await commentUseCase.deletePostComments(idPost)
         response.status(200).json({
             success: true,
-            card: cardDeleted,
+            card: postDelete,
             comments: commentsDeleted,
-            message: "card Deleted!"
+            message: "Post Deleted!"
         })
     } catch (error){
-        response.status(400).json({
-            success: false,
-            message: error.message
-        })
+        next(new StatusHttp(error.message, error.status, error.name))
     }
 })
 
 router.patch('/:idPost',auth, async (request, response)=>{
     try{
-        const updateCardRequest = request.body
+        const postUpdated = request.body
         const {idPost} = request.params
-        const cardUpdated = await posts.update(idPost, updateCardRequest)
+        const cardUpdated = await posts.update(idPost, postUpdated)
         response.status(200).json({
             success: true,
             card: cardUpdated,
             message: "card Updated!"
         })
     } catch (error){
-        response.status(400).json({
-            success: false,
-            message: error.message
-        })
+        next(new StatusHttp(error.message, error.status, error.name))
     }
 })
 

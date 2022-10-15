@@ -21,13 +21,13 @@ function deleteById(id){
     return Post.findByIdAndDelete(id)
 }
 
-async function create (newCard,author){
-    const {title, date, tags, description, headerImg, postImg,reading} = newCard
+async function create (newPost,author){
+    const {title, date, tags, description, headerImg, postImg,reading} = newPost
     return Post.create({title, date, tags, description, headerImg, postImg,reading, author})
 }
 
-function update(idCard, unupdatedCard){
-    return Post.findByIdAndUpdate(idCard, unupdatedCard, {new : true})
+function update(idPost, updatedPost){
+    return Post.findByIdAndUpdate(idPost, updatedPost, {new : true})
 }
 
 export {

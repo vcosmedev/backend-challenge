@@ -22,7 +22,7 @@ router.post('/', async(request, response, next) => {
 });
 
 
-router.get('/', async (request, response, next) => {
+router.get('/', auth, async (request, response, next) => {
     try {
         let allWriters;
         const page = request.query.page
@@ -43,7 +43,7 @@ router.get('/', async (request, response, next) => {
     }
 });
 
-router.get('/:id', async (request, response, next) => {
+router.get('/:id', auth, async (request, response, next) => {
     try {
         const {id} = request.params
         let writer = await writersUsesCases.getById(id)
@@ -58,7 +58,7 @@ router.get('/:id', async (request, response, next) => {
     }
 });
 
-router.patch('/:id', async(request, response, next) => {
+router.patch('/:id', auth, async(request, response, next) => {
     try {
         const {id} = request.params
         const {body} = request
@@ -74,7 +74,7 @@ router.patch('/:id', async(request, response, next) => {
 });
 
 
-router.delete('/:id',  async(request, response, next) => {
+router.delete('/:id', auth, async(request, response, next) => {
     try {
         const {id} = request.params
         await writersUsesCases.deleteById(id)

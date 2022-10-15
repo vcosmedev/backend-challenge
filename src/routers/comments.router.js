@@ -1,7 +1,7 @@
 import express from 'express'
 import * as commentUseCase from '../useCases/comments.use.js'
 import * as posts from '../useCases/posts.use.js'
-import {errorHandle} from '../middlewares/errorCustom.js'
+import {StatusHttp} from '../libs/errorCustom.js'
 import jwt from 'jsonwebtoken'
 import {auth} from '../middlewares/auth.js'
 
@@ -18,10 +18,7 @@ router.get('/:idPost', async(request, response)=>{
             },
         })
     } catch(error){
-        response.json({
-            success: false,
-            message: error.message
-        })
+        next(new StatusHttp(error.message, error.status, error.name))
     }
 })
 
@@ -39,10 +36,6 @@ router.get('/', async(request, response)=>{
             throw new StatusHttp('neither an user nor a post are declare!', 404)
         }
 
-        if (!allComments){
-            console.log('no comments found')
-            throw new StatusHttp('no comments found!', 404)
-        }
         response.json({
             success: true,
             data: {
@@ -50,22 +43,18 @@ router.get('/', async(request, response)=>{
             },
         })
     } catch(error){
-        response.json({
-            success: false,
-            message: error.message
-        })
+        next(new StatusHttp(error.message, error.status, error.name))
     }
 })
 
-router.post('/post/:idCard',auth, async (request, response,next)=>{
+router.post('/post/:idPost',auth, async (request, response,next)=>{
     try{
-    const idCard = request.params.idCard;
-    const newCommentContent = request.body
+    const idPost = request.params.idPost;
+    const newCommentData = request.body
     const token = request.headers.authorization
     const {id} = jwt.decode(token)
-    const newComment = await commentUseCase.create(newCommentContent,id,idCard)
-    // const commentCreated = await commentUseCase.create(newComment)
-    const cardUpdated = await posts.createComment(newComment.card, newComment.id)
+    const newComment = await commentUseCase.create(newCommentData,id,idPost)
+    const postUpdated = await posts.createComment(newComment.post, newComment.id)
     response.json({
         success: true,
         data: {
@@ -73,18 +62,15 @@ router.post('/post/:idCard',auth, async (request, response,next)=>{
         }
     })
     } catch(error){
-        response.json({
-            success: false,
-            message: error.message
-        })
+        next(new StatusHttp(error.message, error.status, error.name))
     }
 })
 
 router.patch('/:idComment', async (request, response)=>{
     try{
         const {idComment} = request.params
-        const unupdatedComment = request.body
-        const updatedComment = await commentUseCase.update(idComment, unupdatedComment) 
+        const updatedCommentData = request.body
+        const updatedComment = await commentUseCase.update(idComment, updatedCommentData) 
         response.json({
             success: true,
             data: {
@@ -92,10 +78,7 @@ router.patch('/:idComment', async (request, response)=>{
             },
         })
     } catch (error){
-        response.json({
-            success: false,
-            message: error.message
-        })
+        next(new StatusHttp(error.message, error.status, error.name))
     }
 })
 
@@ -103,22 +86,16 @@ router.delete('/:idComment',auth, async (request, response)=>{
     try{
         const {idComment}= request.params
         const commentDeleted = await commentUseCase.deleteById(idComment)
-        const cardId = commentDeleted.card.toString()
-        // const cardUpdated = await posts.deleteComment(cardId, commentDeleted.id)
+        const postId = commentDeleted.post.toString()
+        const postUpdated = await posts.deleteComment(postId, commentDeleted.id)
         response.json({
             success: true,
             data: {
                 comment: commentDeleted
-            },
-        //     card:{
-        //         card : cardUpdated 
-        //     }
+            }
         })
     } catch(error){
-        response.json({
-            success: false,
-            message: error.message
-        })
+        next(new StatusHttp(error.message, error.status, error.name))
     }
 })
 

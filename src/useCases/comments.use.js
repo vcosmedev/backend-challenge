@@ -9,16 +9,16 @@ function getById(id){
 }
 
 function getByPost(id){
-    return Comment.find({card: id})
+    return Comment.find({post: id})
 }
 
 function getByUser(id){
-    return Comment.find({user: id})
+    return Comment.find({author: id})
 }
 
-async function create(newComment,user,card){
+async function create(newComment,user,post){
     const {text,reactions,date} = newComment
-    return Comment.create({text,reactions,date,user,card})
+    return Comment.create({text,reactions,date,user,post})
 }
 
 function update(id, newComment){
