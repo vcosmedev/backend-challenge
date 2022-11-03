@@ -1,41 +1,53 @@
-import {Post} from '../models/post.model.js'
+import { Post } from "../models/post.model.js";
 
-
-function getAll(){
-    return Post.find({}).populate('author')
+function getAll() {
+  return Post.find({}).populate("author");
 }
 
-function getById(id){
-    return Post.findById(id).populate('author')
+function getById(id) {
+  return Post.findById(id).populate("author");
 }
 
-function getPostByUserId(id){
-    return Post.find({author: id})
+function getPostByUserId(id) {
+  return Post.find({ author: id });
 }
 
-function getByUser(id){
-    return Post.find({author: id})
+function getByUser(id) {
+  return Post.find({ author: id });
 }
 
-function deleteById(id){
-    return Post.findByIdAndDelete(id)
+function deleteById(id) {
+  return Post.findByIdAndDelete(id);
 }
 
-async function create (newPost,author){
-    const {title, date, tags, description, headerImg, postImg,reading} = newPost
-    return Post.create({title, date, tags, description, headerImg, postImg,reading, author})
+async function create(newPost, author) {
+  newPost;
+  const likes = Math.round(Math.random() * (50 - 0) + 0);
+  const { title, date, tags, description, headerImg, postImg, reading } =
+    newPost;
+  return Post.create({
+    title,
+    date,
+    tags,
+    description,
+    headerImg,
+    postImg,
+    likes,
+    reading,
+    author,
+  });
 }
 
-function update(idPost, updatedPost){
-    return Post.findByIdAndUpdate(idPost, updatedPost, {new : true})
+function update(idPost, updatedPost) {
+  return Post.findByIdAndUpdate(idPost, updatedPost, { new: true });
 }
 
 export {
-    getAll,
-    getById,
-    getByUser,
-    getPostByUserId,
-    deleteById,
-    update, 
-    create
-    }
+  getAll,
+  getById,
+  getByUser,
+  getPostByUserId,
+  deleteById,
+  update,
+  create,
+};
