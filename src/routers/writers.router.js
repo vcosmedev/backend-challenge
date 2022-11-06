@@ -21,7 +21,7 @@ router.post("/", async (request, response, next) => {
   }
 });
 
-router.get("/", async (request, response, next) => {
+router.get("/", auth, async (request, response, next) => {
   try {
     let allWriters;
     const page = request.query.page;

@@ -27,6 +27,21 @@ router.get("/", async (request, response, next) => {
     next(new StatusHttp(error.message, error.status, error.name));
   }
 });
+router.get("/:id", async (request, response, next) => {
+  try {
+    const { id } = request.query;
+
+    let postByID = await posts.getByID(id);
+    response.json({
+      success: true,
+      data: {
+        posts: postByID,
+      },
+    });
+  } catch (error) {
+    next(new StatusHttp(error.message, error.status, error.name));
+  }
+});
 
 router.get("/writer/:idWriter", auth, async (request, response, next) => {
   try {
