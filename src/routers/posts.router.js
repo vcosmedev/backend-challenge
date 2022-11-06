@@ -31,7 +31,7 @@ router.get("/:id", async (request, response, next) => {
   try {
     const { id } = request.query;
 
-    let postByID = await posts.getById(id);
+    const postByID = await posts.getById(id);
     response.json({
       success: true,
       data: {
