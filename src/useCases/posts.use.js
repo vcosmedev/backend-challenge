@@ -5,7 +5,7 @@ function getAll() {
 }
 
 function getById(id) {
-  return Post.findById(id).populate("author");
+  return Post.findById(id);
 }
 
 function getPostByUserId(id) {
