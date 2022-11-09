@@ -17,9 +17,9 @@ async function create(newWriter) {
     const encryptedPassword = await bcrypt.hash(password); // 
     console.log({...newWriter, password: encryptedPassword})
 
-    const writer = Writer.create({...newWriter, password: encryptedPassword});
+    const writer = await Writer.create({...newWriter, password: encryptedPassword});
     console.log(writer)
-    return Writer.create({...newWriter, password: encryptedPassword});
+    return await Writer.create({...newWriter, password: encryptedPassword});
 };
 
 async function updateById(idWriter, newData) {
@@ -38,16 +38,16 @@ async function deleteById(idWriter) {
     return await Writer.deleteOne({_id: idWriter});
 };
 
-function getById(idWriter) {
-    return Writer.findById(idWriter);
+async function getById(idWriter) {
+    return await Writer.findById(idWriter);
 };
 
-function getAll() {
-    return Writer.find({}); // Regresa una promesa
+async function getAll() {
+    return await Writer.find({}); // Regresa una promesa
 };
 
-function getAllByPage(page, limit) {
-    return Writer.find().sort({'createdAt': -1}).skip((page - 1) * limit).limit(limit);
+async function getAllByPage(page, limit) {
+    return await Writer.find().sort({'createdAt': -1}).skip((page - 1) * limit).limit(limit);
 };
 
 // Find; Sort: ordena forma descendente, por fecha de creación; Skip -> Saltar por límite de 10 Writers
