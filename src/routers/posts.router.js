@@ -2,7 +2,6 @@ import express from "express";
 import * as posts from "../useCases/posts.use.js";
 import * as commentUseCase from "../useCases/comments.use.js";
 import { auth } from "../middlewares/auth.js";
-import jwt from "jsonwebtoken";
 import { StatusHttp } from "../libs/errorCustom.js";
 
 const router = express.Router();
@@ -60,13 +59,11 @@ router.get("/writer/:idWriter", auth, async (request, response, next) => {
   }
 });
 
-router.post("/", async (request, response, next) => {
+router.post("/", auth, async (request, response, next) => {
   try {
-    const { body: newPostData } = request;
-    const token = request.headers.authorization;
-    const { id } = jwt.decode(token);
-    console.log(id);
-    const newPost = await posts.create(newPostData, id);
+    const { body: newPostData, userCurrent } = request;
+    console.log(userCurrent);
+    const newPost = await posts.create(newPostData, userCurrent);
 
     response.json({
       success: true,
@@ -99,10 +96,10 @@ router.patch("/:idPost", auth, async (request, response, next) => {
   try {
     const postUpdated = request.body;
     const { idPost } = request.params;
-    const cardUpdated = await posts.update(idPost, postUpdated);
+    const updatedPost = await posts.update(idPost, postUpdated);
     response.status(200).json({
       success: true,
-      card: cardUpdated,
+      post: updatedPost,
       message: "card Updated!",
     });
   } catch (error) {

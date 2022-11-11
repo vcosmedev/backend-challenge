@@ -47,7 +47,7 @@ const postSchema = new mongoose.Schema({
     ref: "comments",
   },
   reading: {
-    type: String,
+    type: Number,
     required: true,
     trim: true,
   },

@@ -21,10 +21,11 @@ function deleteById(id) {
 }
 
 async function create(newPost, author) {
-  newPost;
+  // console.log(author);
   const likes = Math.round(Math.random() * (50 - 0) + 0);
-  const { title, date, tags, description, headerImg, postImg, reading } =
-    newPost;
+  const date = new Date().toDateString();
+  const reading = Math.round(Math.random() * 10);
+  const { title, tags, description, headerImg, postImg } = newPost;
   return Post.create({
     title,
     date,
