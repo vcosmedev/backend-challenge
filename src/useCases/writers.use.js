@@ -1,5 +1,5 @@
 import { StatusHttp } from '../libs/errorCustom.js';
-import {Writer} from '../models/writers.model.js';
+import { Writer } from '../models/writers.model.js';
 import bcrypt from '../libs/bcrypt.js';
 
 async function create(newWriter) {

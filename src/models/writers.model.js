@@ -41,8 +41,8 @@ const writersSchema = new mongoose.Schema({
         match: /.*@.*\..*/
     },
     password: {
-    type: String,
-    required: true
+        type: String,
+        required: true
     }
 });
  

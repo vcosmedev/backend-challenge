@@ -29,7 +29,7 @@ router.get("/", async (request, response, next) => {
 });
 router.get("/:id", async (request, response, next) => {
   try {
-    const { id } = request.query;
+    const { id } = request.params;
 
     const postByID = await posts.getById(id);
     response.json({
